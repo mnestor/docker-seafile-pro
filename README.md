@@ -14,14 +14,16 @@ mysqlseafile:
         - MYSQL_USER=seafile
         - MYSQL_PASSWORD=******
 seafile:
-   image: fcying/seafile-pro-mysql:latest
-   links:
-      - mysqlseafile:db
-   volumes:
-      - /mnt/cloud/seafile:/opt/seafile
-   ports:
-      - "9000:8000"
-      - "8082:8082"
+    image: fcying/seafile-pro-mysql:latest
+    links:
+        - mysqlseafile:db
+    volumes:
+        - /mnt/cloud/seafile:/opt/seafile
+    environment:
+        - RESET=1   #reset sh file
+    ports:
+        - "9000:8000"
+        - "8082:8082"
 ```
 
 ## Setup

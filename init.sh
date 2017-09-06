@@ -9,4 +9,11 @@ if [ ! -f "/opt/seafile/crontab" ]; then
     cp /opt/crontab /opt/seafile
 fi
 
+if [ "$RESET" == "1" ]; then
+    echo "copy service_seafile.sh"
+    cp /opt/service_seafile.sh /opt/seafile
+    echo "copy crontab"
+    cp /opt/crontab /opt/seafile
+fi
+
 /bin/bash /opt/seafile/service_seafile.sh $1

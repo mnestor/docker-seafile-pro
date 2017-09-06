@@ -42,6 +42,7 @@ elif [ "$1" == "setup" ]; then
     tar xzvf seafile-pro-server_${SEAFILE_VERSION}_x86-64.tar.gz
     cd seafile-pro-server-${SEAFILE_VERSION}
     ./setup-seafile-mysql.sh
+    /bin/bash /opt/seafile/service_seafile.sh start
 elif [ "$1" == "bash" ]; then
     /bin/bash
 else
