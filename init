@@ -1,5 +1,11 @@
 #!/bin/bash
 
+PUID=${PUID:-999}
+PGID=${PGID:-$PUID}
+
+usermod -o -u "$PUID" user
+groupmod -o -g "$PGID" user
+
 if [ ! -f "/opt/seafile/service_seafile.sh" ]; then
     echo "copy service_seafile.sh"
     cp /opt/service_seafile.sh /opt/seafile
@@ -15,5 +21,11 @@ if [ "$RESET" == "1" ]; then
     echo "copy crontab"
     cp /opt/crontab /opt/seafile
 fi
+
+chown $PUID:$PGID /opt/seafile/
+chown $PUID:$PGID /opt/seafile/crontab
+chown $PUID:$PGID /opt/seafile/service_seafile.sh
+
+service cron start
 
 /bin/bash /opt/seafile/service_seafile.sh $1

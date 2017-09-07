@@ -10,9 +10,9 @@ if [ "$1" == "service" ]; then
     typeset -i retry_count=0
     while true
     do
-        echo "" > $log_file
+        su user -c "echo "" > $log_file"
         echo "start seafile retry time: " $retry_count >> $log_file
-        /bin/bash /opt/seafile/service_seafile.sh restart >> $log_file 2>&1
+        /opt/seafile/service_seafile.sh restart >> $log_file 2>&1
         if [ $(cat $log_file | grep -c failed) -eq 0 ]; then
             echo "start success... retry time: " $retry_count >> $log_file
             break
@@ -20,28 +20,28 @@ if [ "$1" == "service" ]; then
         retry_count=$retry_count+1
         sleep 5
     done
-    service cron start
-    crontab /opt/seafile/crontab
+    su user -c "crontab /opt/seafile/crontab"
     tail -F $log_file
 elif [ "$1" == "start" ]; then
     cd ./seafile-server-latest
-    ./seafile.sh start
-    ./seahub.sh start
+    su user -c "./seafile.sh start"
+    su user -c "./seahub.sh start"
 elif [ "$1" == "restart" ]; then
     cd ./seafile-server-latest
-    ./seafile.sh restart
-    ./seahub.sh restart
+    su user -c "./seafile.sh restart"
+    su user -c "./seahub.sh restart"
 elif [ "$1" == "stop" ]; then
     cd ./seafile-server-latest
-    ./seahub.sh stop
-    ./seafile.sh stop
+    su user -c "./seahub.sh stop"
+    su user -c "./seafile.sh stop"
 elif [ "$1" == "setup" ]; then
-    cp -vf /opt/seafile-pro-server_${SEAFILE_VER}_x86-64.tar.gz .
-    tar xzvf seafile-pro-server_${SEAFILE_VER}_x86-64.tar.gz
+    tar xzvf /opt/seafile-pro-server_${SEAFILE_VER}_x86-64_Ubuntu.tar.gz -C /opt/seafile
+    chown -R user:user seafile-pro-server-${SEAFILE_VER}
     cd seafile-pro-server-${SEAFILE_VER}
-    ./setup-seafile-mysql.sh
-    /bin/bash /opt/seafile/service_seafile.sh start
+    su user -c "./setup-seafile-mysql.sh"
+    /opt/seafile/service_seafile.sh start
 elif [ "$1" == "bash" ]; then
+    #su user
     /bin/bash
 else
     echo "invalid parameter"

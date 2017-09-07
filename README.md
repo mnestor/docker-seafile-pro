@@ -21,6 +21,8 @@ seafile:
         - /mnt/cloud/seafile:/opt/seafile
     environment:
         - RESET=1   #reset sh file
+        - PUID=<uid>
+        - PGID=<gid>
     ports:
         - "9000:8000"
         - "8082:8082"
