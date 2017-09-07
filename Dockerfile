@@ -15,7 +15,9 @@ RUN apt-get update  \
 COPY service_seafile.sh /opt
 COPY crontab /opt
 COPY init.sh /bin
-RUN chmod 700 /bin/init.sh
+ENV SEAFILE_VER 6.1.8
+RUN chmod 700 /bin/init.sh \
+    && wget "https://download.seafile.com/d/6e5297246c/files/?p=/pro/seafile-pro-server_${SEAFILE_VER}_x86-64.tar.gz&dl=1" -O /opt/seafile-pro-server_${SEAFILE_VER}_x86-64.tar.gz
 
 CMD ["service"]
 ENTRYPOINT ["/bin/init.sh"]

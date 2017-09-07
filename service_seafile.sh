@@ -2,8 +2,6 @@
 
 cd `dirname $0`
 
-SEAFILE_VERSION=6.1.4
-
 log_file=/opt/seafile/log
 
 ulimit -n 30000
@@ -38,9 +36,9 @@ elif [ "$1" == "stop" ]; then
     ./seahub.sh stop
     ./seafile.sh stop
 elif [ "$1" == "setup" ]; then
-    wget "https://download.seafile.com/d/6e5297246c/files/?p=/pro/seafile-pro-server_${SEAFILE_VERSION}_x86-64.tar.gz&dl=1" -O seafile-pro-server_${SEAFILE_VERSION}_x86-64.tar.gz
-    tar xzvf seafile-pro-server_${SEAFILE_VERSION}_x86-64.tar.gz
-    cd seafile-pro-server-${SEAFILE_VERSION}
+    cp -vf /opt/seafile-pro-server_${SEAFILE_VER}_x86-64.tar.gz .
+    tar xzvf seafile-pro-server_${SEAFILE_VER}_x86-64.tar.gz
+    cd seafile-pro-server-${SEAFILE_VER}
     ./setup-seafile-mysql.sh
     /bin/bash /opt/seafile/service_seafile.sh start
 elif [ "$1" == "bash" ]; then
