@@ -40,6 +40,13 @@ elif [ "$1" == "setup" ]; then
     cd seafile-pro-server-${SEAFILE_VER}
     su user -c "./setup-seafile-mysql.sh"
     /opt/seafile/service_seafile.sh start
+elif [ "$1" == "search_update" ]; then
+    cd ./seafile-server-latest
+    /opt/seafile/service_seafile.sh restart
+    su user -c "./pro/pro.py search --clear <<EOF
+y
+EOF"
+    su user -c "./pro/pro.py search --update"
 elif [ "$1" == "bash" ]; then
     #su user
     /bin/bash

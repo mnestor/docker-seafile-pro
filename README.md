@@ -28,15 +28,19 @@ seafile:
         - "8082:8082"
 ```
 
-## Setup
+## Setup  
 
-docker-compose run --rm seafile setup
+docker-compose run --rm seafile setup  
 
 ## Run
 
-docker-compose up -d
+docker-compose up -d  
 
 ## shell
 
-docker-compose run --rm seafile bash
+docker-compose run --rm seafile bash  
+
+## search update
+
+docker-compose exec seafile /bin/init search_update  
 
