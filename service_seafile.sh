@@ -1,6 +1,6 @@
 #/bin/bash
 
-cd `dirname $0`
+cd /opt/seafile
 
 log_file=/opt/seafile/log
 
@@ -39,6 +39,12 @@ elif [ "$1" == "setup" ]; then
     chown -R user:user seafile-pro-server-${SEAFILE_VER}
     cd seafile-pro-server-${SEAFILE_VER}
     su user -c "./setup-seafile-mysql.sh"
+    /opt/seafile/service_seafile.sh start
+elif [ "$1" == "setup_sqlite" ]; then
+    tar xzvf /opt/seafile-pro-server_${SEAFILE_VER}_x86-64_Ubuntu.tar.gz -C /opt/seafile
+    chown -R user:user seafile-pro-server-${SEAFILE_VER}
+    cd seafile-pro-server-${SEAFILE_VER}
+    su user -c "./setup-seafile.sh"
     /opt/seafile/service_seafile.sh start
 elif [ "$1" == "search_update" ]; then
     cd ./seafile-server-latest

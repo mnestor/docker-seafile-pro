@@ -1,11 +1,11 @@
 
-# Docker Image for Seafile Pro Edition using MySql
+# Docker Image for Seafile Pro Edition using mysql && sqlite3
 
 ## docker-compose.yml
 
 Edit this `docker-compose.yml`
 ```
-mysqlseafile:
+mysqlseafile:      #sqlite not need this
     image: mysql:5.7
     volumes:
         - /mnt/cloud/mysqlseafile:/var/lib/mysql 
@@ -16,7 +16,7 @@ mysqlseafile:
 seafile:
     image: fcying/seafile-pro-mysql:latest
     links:
-        - mysqlseafile:db
+        - mysqlseafile:db #sqlite not need this
     volumes:
         - /mnt/cloud/seafile:/opt/seafile
     environment:
@@ -28,9 +28,11 @@ seafile:
         - "8082:8082"
 ```
 
+
 ## Setup  
 
-docker-compose run --rm seafile setup  
+docker-compose run --rm seafile setup           #use mysql  
+docker-compose run --rm seafile setup_sqlite    #use sqlite3  
 
 ## Run
 
@@ -42,5 +44,5 @@ docker-compose run --rm seafile bash
 
 ## search update
 
-docker-compose exec seafile /bin/init search_update  
+docker-compose exec seafile /init search_update  
 
