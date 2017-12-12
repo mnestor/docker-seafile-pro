@@ -53,6 +53,15 @@ elif [ "$1" == "search_update" ]; then
 y
 EOF"
     su user -c "./pro/pro.py search --update"
+elif [ "$1" == "clear" ]; then
+    cd ./seafile-server-latest
+    su user -c "./seahub.sh clearsessions"
+elif [ "$1" == "gc" ]; then
+    cd ./seafile-server-latest
+    su user -c "./seaf-gc.sh"
+elif [ "$1" == "fsck" ]; then
+    cd ./seafile-server-latest
+    su user -c "./seaf-fsck.sh"
 elif [ "$1" == "bash" ]; then
     #su user
     /bin/bash

@@ -46,3 +46,14 @@ docker-compose run --rm seafile bash
 
 docker-compose exec seafile /init search_update  
 
+## clearsessions
+
+docker-compose exec seafile /init clear  
+
+## gc
+
+docker-compose exec seafile /init gc  
+
+## fsck
+
+docker-compose exec seafile /init fsck  
