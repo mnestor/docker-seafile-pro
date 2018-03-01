@@ -46,6 +46,27 @@ elif [ "$1" == "setup_sqlite" ]; then
     cd seafile-pro-server-${SEAFILE_VER}
     su user -c "./setup-seafile.sh"
     /opt/seafile/service_seafile.sh start
+elif [ "$1" == "upgrade" ]; then
+    CURRENT_VER=$(ls -lah | grep 'seafile-server-latest' | awk -F"seafile-pro-server-" '{print $2}')
+    CURRENT_MAJOR_VER=$(echo $CURRENT_VER | awk -F"." '{print $1"."$2}')
+    NEW_MAJOR_VER=$(echo $SEAFILE_VER | awk -F"." '{print $1"."$2}')
+    if [ $CURRENT_VER == $SEAFILE_VER ]; then
+        echo "You already have the same version installed, exit"
+    else
+        tar xzvf /opt/seafile-pro-server_${SEAFILE_VER}_x86-64_Ubuntu.tar.gz -C /opt/seafile
+        cd ./seafile-pro-server-${SEAFILE_VER}/upgrade
+        echo current_version: $CURRENT_VER
+        echo new_version: ${SEAFILE_VER}
+        if [ $CURRENT_MAJOR_VER == $NEW_MAJOR_VER ]; then
+            echo "maintenance update"
+            ./minor-upgrade.sh
+            rm -rf /opt/seafile/seafile-pro-server-${CURRENT_VER}
+        else
+            echo "Big version update, Please run the matching upgrade script, and then run exit"
+            ls
+            su user
+        fi
+    fi
 elif [ "$1" == "search_update" ]; then
     cd ./seafile-server-latest
     /opt/seafile/service_seafile.sh restart

@@ -42,6 +42,10 @@ docker-compose up -d
 
 docker-compose run --rm seafile bash  
 
+## version upgrade
+
+docker-compose run --rm seafile upgrade  
+
 ## search update
 
 docker-compose exec seafile /init search_update  
