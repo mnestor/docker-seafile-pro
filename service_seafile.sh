@@ -25,24 +25,35 @@ if [ "$1" == "service" ]; then
 elif [ "$1" == "start" ]; then
     cd ./seafile-server-latest
     su user -c "./seafile.sh start"
-    su user -c "./seahub.sh start"
+    if [ "$FASTCGI" == "1" ]; then
+      su user -c "SEAFILE_FASTCGI_HOST=0.0.0.0 ./seahub.sh start-fastcgi 8000"
+    else
+      su user -c "./seahub.sh start"
+    fi
 elif [ "$1" == "restart" ]; then
     cd ./seafile-server-latest
     su user -c "./seafile.sh restart"
-    su user -c "./seahub.sh restart"
+    if [ "$FASTCGI" == "1" ]; then
+      su user -c "SEAFILE_FASTCGI_HOST=0.0.0.0 ./seahub.sh restart-fastcgi 8000"
+    else
+      su user -c "./seahub.sh restart"
+    fi
 elif [ "$1" == "stop" ]; then
     cd ./seafile-server-latest
     su user -c "./seahub.sh stop"
     su user -c "./seafile.sh stop"
 elif [ "$1" == "setup" ]; then
-    tar xzvf /opt/seafile-pro-server_${SEAFILE_VER}_x86-64_Ubuntu.tar.gz -C /opt/seafile
+    tar xzvf /opt/seafile-pro-server_${SEAFILE_VER}_x86-64.tar.gz -C /opt/seafile
     chown -R user:user seafile-pro-server-${SEAFILE_VER}
+    rm /opt/seafile/seafile-server-latest
+    ln -s /opt/seafile/seafile-pro-server-${SEAFILE_VER} /opt/seafile/seafile-server-latest
     cd seafile-pro-server-${SEAFILE_VER}
     su user -c "./setup-seafile-mysql.sh"
     /opt/seafile/service_seafile.sh start
 elif [ "$1" == "setup_sqlite" ]; then
-    tar xzvf /opt/seafile-pro-server_${SEAFILE_VER}_x86-64_Ubuntu.tar.gz -C /opt/seafile
+    tar xzvf /opt/seafile-pro-server_${SEAFILE_VER}_x86-64.tar.gz -C /opt/seafile
     chown -R user:user seafile-pro-server-${SEAFILE_VER}
+    rm /opt/seafile/seafile-server-latest && ln -s /opt/seafile/seafile-pro-server-${SEAFILE_VER} /opt/seafile/seafile-server-latest
     cd seafile-pro-server-${SEAFILE_VER}
     su user -c "./setup-seafile.sh"
     /opt/seafile/service_seafile.sh start
@@ -53,7 +64,8 @@ elif [ "$1" == "upgrade" ]; then
     if [ $CURRENT_VER == $SEAFILE_VER ]; then
         echo "You already have the same version installed, exit"
     else
-        tar xzvf /opt/seafile-pro-server_${SEAFILE_VER}_x86-64_Ubuntu.tar.gz -C /opt/seafile
+        tar xzvf /opt/seafile-pro-server_${SEAFILE_VER}_x86-64.tar.gz -C /opt/seafile
+        rm /opt/seafile/seafile-server-latest && ln -s /opt/seafile/seafile-pro-server-${SEAFILE_VER} /opt/seafile/seafile-server-latest
         cd ./seafile-pro-server-${SEAFILE_VER}/upgrade
         echo current_version: $CURRENT_VER
         echo new_version: ${SEAFILE_VER}

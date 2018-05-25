@@ -26,6 +26,6 @@ chown $PUID:$PGID /opt/seafile/
 chown $PUID:$PGID /opt/seafile/crontab
 chown $PUID:$PGID /opt/seafile/service_seafile.sh
 
-service cron start
+crond &
 
 /bin/bash /opt/seafile/service_seafile.sh $1
