@@ -6,26 +6,15 @@ PGID=${PGID:-$PUID}
 usermod -o -u "$PUID" user
 groupmod -o -g "$PGID" user
 
-if [ ! -f "/opt/seafile/service_seafile.sh" ]; then
-    echo "copy service_seafile.sh"
-    cp /opt/service_seafile.sh /opt/seafile
-fi
 if [ ! -f "/opt/seafile/crontab" ]; then
-    echo "copy crontab"
-    cp /opt/crontab /opt/seafile
-fi
-
-if [ "$RESET" == "1" ]; then
-    echo "copy service_seafile.sh"
-    cp /opt/service_seafile.sh /opt/seafile
     echo "copy crontab"
     cp /opt/crontab /opt/seafile
 fi
 
 chown $PUID:$PGID /opt/seafile/
 chown $PUID:$PGID /opt/seafile/crontab
-chown $PUID:$PGID /opt/seafile/service_seafile.sh
+chown $PUID:$PGID /opt/service_seafile.sh
 
-crond &
+cron /opt/seafile/crontab &
 
-/bin/bash /opt/seafile/service_seafile.sh $1
+/bin/bash /opt/service_seafile.sh $1
